@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
@@ -5,9 +7,6 @@ export async function POST(req: NextRequest) {
     const { messages, system } = await req.json()
 
     const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyB-TNt_UteZX11nitB4lX0YcdMwOkmPw0k'
-    if (!apiKey) {
-      return NextResponse.json({ error: 'GEMINI_API_KEY not set in environment variables' }, { status: 500 })
-    }
 
     const contents = messages.map((m: { role: string; content: string }) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
@@ -20,9 +19,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: system || 'You are a helpful assistant.' }]
-        },
+        system_instruction: { parts: [{ text: system || 'You are a helpful assistant.' }] },
         contents,
         generationConfig: { maxOutputTokens: 1000 },
       }),
@@ -31,12 +28,12 @@ export async function POST(req: NextRequest) {
     const data = await response.json()
 
     if (!response.ok) {
-      return NextResponse.json({ error: `Gemini API error: ${JSON.stringify(data)}` }, { status: 500 })
+      return NextResponse.json({ error: `Gemini error: ${JSON.stringify(data)}` }, { status: 500 })
     }
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text
     if (!text) {
-      return NextResponse.json({ error: `No text in response: ${JSON.stringify(data)}` }, { status: 500 })
+      return NextResponse.json({ error: `Empty: ${JSON.stringify(data)}` }, { status: 500 })
     }
 
     return NextResponse.json({ text })
