@@ -29,7 +29,7 @@ export default function Dashboard() {
       const sys = COACH_SYSTEM(ctx)
       const text = await askClaude([{
         role: 'user',
-        content: `Give me a concise weekly training review. This week: ${weekKm.toFixed(1)}km total, avg pace ${avgPace}/km, ${runs.slice(0, 4).map(r => `${r.name} ${r.distanceKm}km @ ${r.avgPace}/km HR${r.avgHR}`).join(', ')}. Reference my HRV (${profile.hrv}ms vs ${profile.hrvBaseline}ms baseline) and what it means for today's long run. Be specific and honest. Under 100 words.`
+        content: `Give me a concise weekly training review. This week: ${weekKm.toFixed(1)}km total, avg pace ${avgPace}/km. Reference my HRV (${profile.hrv}ms vs ${profile.hrvBaseline}ms baseline). Be specific and honest. Under 100 words.`
       }], sys)
       setWeeklyReview(text)
     } catch {
@@ -44,47 +44,29 @@ export default function Dashboard() {
   return (
     <AppShell>
       <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12, flex: 1, overflowY: 'auto' }}>
-       const newRun = {
-  id: Date.now().toString(),
-  date: new Date(form.date).toISOString(),
-  type: form.type,
-  name: typeNames[form.type],
-  distanceKm: form.distanceKm,
-  durationMin: form.durationMin,
-  avgPace: form.avgPace,
-  avgHR: form.avgHR,
-  maxHR: form.maxHR,
-  cadence: form.cadence,
-  sleepHrs: form.sleepHrs,
-  todayHRV: form.todayHRV,
-  legFeel: form.legFeel,
-  rpe: form.rpe,
-  notes: form.notes,
-} </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 17, fontWeight: 500, color: '#e6edf3' }}>Good morning, {profile.name.split(' ')[0]}</div>
+            <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>Week {currentWeek} of {totalWeeks} · {goalName}</div>
+          </div>
           {todaySession && <Badge color="blue">Long run today · {todaySession.distanceKm}km</Badge>}
         </div>
-
-        {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
           <StatCard value={`${weekKm.toFixed(0)} km`} label="This week" delta="↑ 6 km" deltaColor="up" />
           <StatCard value={avgPace} label="Avg pace" delta="↓ 8s faster" deltaColor="up" />
           <StatCard value="4/5" label="Workouts" delta="80% done" deltaColor="note" />
           <StatCard value={`${streak}d`} label="Streak" delta="Personal best" deltaColor="up" />
         </div>
-
-        {/* Week strip */}
         <GlowCard>
           <SectionHd>This week</SectionHd>
           <div style={{ display: 'flex', gap: 5 }}>
             {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => {
               const session = currentPlan?.sessions[i]
               const status = !session ? 'rest' : session.done && i < 6 ? 'done' : i === 6 ? 'today' : session.type === 'rest' ? 'rest' : 'upcoming'
-              return <WeekDay key={d} label={d.slice(0, 3)} sublabel={session?.distanceKm ? `${session.distanceKm}k` : session?.type === 'rest' ? 'Rest' : '—'} status={status as never} />
+              return <WeekDay key={d} label={d.slice(0, 3)} sublabel={session?.distanceKm ? `${session.distanceKm}k` : 'Rest'} status={status as never} />
             })}
           </div>
         </GlowCard>
-
-        {/* Two col */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <GlowCard>
             <SectionHd>Recent runs</SectionHd>
@@ -103,12 +85,10 @@ export default function Dashboard() {
             <PaceBars weeks={8} />
           </GlowCard>
         </div>
-
-        {/* AI Review */}
         <AiBox label="Claude Sonnet · weekly review">
-          {loadingReview ? <><DotPulse /> <span style={{ marginLeft: 8, color: '#4b5563' }}>Analyzing your week...</span></> : (weeklyReview || 'Click to load weekly review')}
+          {loadingReview ? <><DotPulse /> <span style={{ marginLeft: 8, color: '#4b5563' }}>Analyzing your week...</span></> : (weeklyReview || 'Loading...')}
         </AiBox>
       </div>
-    </AppShell> 
+    </AppShell>
   )
 }
