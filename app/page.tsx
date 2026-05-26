@@ -109,6 +109,6 @@ export default function Dashboard() {
           {loadingReview ? <><DotPulse /> <span style={{ marginLeft: 8, color: '#4b5563' }}>Analyzing your week...</span></> : (weeklyReview || 'Click to load weekly review')}
         </AiBox>
       </div>
-    </AppShell>
+    </AppShell> 
   )
 }
