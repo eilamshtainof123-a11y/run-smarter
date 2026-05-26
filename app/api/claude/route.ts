@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const { messages, system } = await req.json()
 
-    const apiKey = 'AIzaSyB-TNt_UteZX11nitB4lX0YcdMwOkmPw0k'
+   const apiKey = 'AIzaSyB-TNt_UteZX11nitB4lX0YcdMwOkmPw0k'
 
     const contents = messages.map((m: { role: string; content: string }) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
