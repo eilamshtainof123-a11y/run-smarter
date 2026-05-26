@@ -44,9 +44,15 @@ export default function LogWorkout() {
     setLoading(true)
     setReview(null)
 
-    const newRun = {
-      id: Date.now().toString(),
-      date: new Date(runDate).toISOString(),
+    const newRun: {
+  id: string; date: string; type: WorkoutType; name: string;
+  distanceKm: number; durationMin: number; avgPace: string;
+  avgHR: number; maxHR: number; cadence: number; sleepHrs: number;
+  todayHRV: number; legFeel: string; rpe: number; notes: string;
+  aiReview?: string;
+} = {
+  id: Date.now().toString(),
+  date: new Date(runDate).toISOString(),
       type: form.type,
       name: typeNames[form.type],
       distanceKm: form.distanceKm,
