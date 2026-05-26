@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const { messages, system } = await req.json()
 
-    const apiKey = process.env.GEMINI_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyB-TNt_UteZX11nitB4lX0YcdMwOkmPw0k'
     if (!apiKey) {
       return NextResponse.json({ error: 'GEMINI_API_KEY not set in environment variables' }, { status: 500 })
     }
