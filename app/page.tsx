@@ -44,12 +44,23 @@ export default function Dashboard() {
   return (
     <AppShell>
       <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12, flex: 1, overflowY: 'auto' }}>
-        {/* Top bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ fontSize: 17, fontWeight: 500, color: '#e6edf3' }}>Good morning, {profile.name.split(' ')[0]}</div>
-            <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>Week {currentWeek} of {totalWeeks} · {goalName}</div>
-          </div>
+       const newRun = {
+  id: Date.now().toString(),
+  date: new Date(form.date).toISOString(),
+  type: form.type,
+  name: typeNames[form.type],
+  distanceKm: form.distanceKm,
+  durationMin: form.durationMin,
+  avgPace: form.avgPace,
+  avgHR: form.avgHR,
+  maxHR: form.maxHR,
+  cadence: form.cadence,
+  sleepHrs: form.sleepHrs,
+  todayHRV: form.todayHRV,
+  legFeel: form.legFeel,
+  rpe: form.rpe,
+  notes: form.notes,
+} </div>
           {todaySession && <Badge color="blue">Long run today · {todaySession.distanceKm}km</Badge>}
         </div>
 
