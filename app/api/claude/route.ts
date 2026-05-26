@@ -4,25 +4,21 @@ export async function POST(req: NextRequest) {
   try {
     const { messages, system } = await req.json()
 
-   const apiKey = 'AIzaSyB-TNt_UteZX11nitB4lX0YcdMwOkmPw0k'
-
-    const contents = messages.map((m: { role: string; content: string }) => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }],
-    }))
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: system || 'You are a helpful assistant.' }] },
-          contents,
-          generationConfig: { maxOutputTokens: 1000 },
-        }),
-      }
-    )
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer PASTE_YOUR_GROQ_KEY_HERE`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 1024,
+        messages: [
+          { role: 'system', content: system || 'You are Stride AI, an expert running coach.' },
+          ...messages,
+        ],
+      }),
+    })
 
     const data = await response.json()
 
@@ -30,7 +26,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: JSON.stringify(data) }, { status: 500 })
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    const text = data.choices?.[0]?.message?.content
     if (!text) {
       return NextResponse.json({ error: JSON.stringify(data) }, { status: 500 })
     }
