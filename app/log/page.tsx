@@ -48,7 +48,7 @@ export default function LogWorkout() {
   id: string; date: string; type: WorkoutType; name: string;
   distanceKm: number; durationMin: number; avgPace: string;
   avgHR: number; maxHR: number; cadence: number; sleepHrs: number;
-  todayHRV: number; legFeel: string; rpe: number; notes: string;
+  todayHRV: number; legFeel: 'Fresh' | 'Normal' | 'Heavy' | 'Very tired'; rpe: number; notes: string;
   aiReview?: string;
 } = {
   id: Date.now().toString(),
