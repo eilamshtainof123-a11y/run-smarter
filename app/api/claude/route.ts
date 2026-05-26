@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer PASTE_YOUR_GROQ_KEY_HERE`,
+        'Authorization': `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`,
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
